@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/duck" />
+
+    <TextView
+        android:id="@+id/nameTxt"
+        style="@style/styleNameInList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Алексей Миногаров"/>
+
+    <TextView
+        android:id="@+id/tagTxt"
+        style="@style/styleTagInList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/nameTxt"
+        app:layout_constraintStart_toEndOf="@+id/nameTxt"
+        app:layout_constraintTop_toTopOf="@+id/nameTxt"
+        tools:text="mi"/>
+
+    <TextView
+        android:id="@+id/departmentTxt"
+        style="@style/styleDepartmentInList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/nameTxt"
+        app:layout_constraintTop_toBottomOf="@+id/nameTxt"
+        tools:text="Analyst"/>
+
+    <TextView
+        android:id="@+id/birthdayTxt"
+        style="@style/styleDateInList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="5 июн"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
