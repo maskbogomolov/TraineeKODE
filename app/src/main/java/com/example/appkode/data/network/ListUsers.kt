@@ -1,4 +1,4 @@
-package com.example.appkode.data
+package com.example.appkode.data.network
 
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable

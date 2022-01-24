@@ -1,5 +1,6 @@
-package com.example.appkode.data
+package com.example.appkode.data.network
 
+import com.example.appkode.data.network.ListUsers
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaTypeOrNull

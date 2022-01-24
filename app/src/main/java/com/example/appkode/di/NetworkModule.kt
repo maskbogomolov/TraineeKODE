@@ -1,6 +1,7 @@
 package com.example.appkode.di
 
-import com.example.appkode.data.UsersApi
+
+import com.example.appkode.data.network.UsersApi
 import dagger.Module
 import dagger.Provides
 
@@ -11,4 +12,5 @@ class NetworkModule {
     fun provideUsersApi(): UsersApi{
         return UsersApi()
     }
+
 }

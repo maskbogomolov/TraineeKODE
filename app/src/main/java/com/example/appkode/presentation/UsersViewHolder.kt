@@ -3,8 +3,9 @@ package com.example.appkode.presentation
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.example.appkode.data.UserDto
+import com.example.appkode.data.network.UserDto
 import com.example.appkode.databinding.UserItemBinding
+import com.example.appkode.domain.User
 
 class UsersViewHolder(
     private val binding: UserItemBinding,
@@ -12,22 +13,22 @@ class UsersViewHolder(
     private val viewModel: UsersViewModel
 ): RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(data: UserDto){
+    fun bind(data: User){
         setName(data)
         setDepartment(data)
         setTag(data)
         loadImage(data)
     }
-    fun setName(data: UserDto){
+    fun setName(data: User){
         binding.nameTxt.text = data.firstName + data.lastName
     }
-    fun setDepartment(data: UserDto){
+    fun setDepartment(data: User){
         binding.departmentTxt.text = data.department
     }
-    fun setTag(data: UserDto){
+    fun setTag(data: User){
         binding.tagTxt.text = data.userTag
     }
-    fun loadImage(data: UserDto){
+    fun loadImage(data: User){
         binding.imageView.load(data.avatarUrl)
     }
 }

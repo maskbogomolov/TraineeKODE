@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.appkode.R
 import com.example.appkode.databinding.FragmentUsersListBinding
 import com.example.appkode.di.appComponent
+import com.example.appkode.util.NetworkResponse
 import dagger.Lazy
 import javax.inject.Inject
 
@@ -36,7 +37,9 @@ class UsersListFragment : Fragment(R.layout.fragment_users_list) {
             adapter = usersAdapter
         }
         viewModel.users.observe(viewLifecycleOwner) { users ->
-            usersAdapter.submitList(users)
+            when(users){
+                is NetworkResponse.Success -> usersAdapter.submitList(users.data)
+            }
         }
         setHasOptionsMenu(true)
     }
