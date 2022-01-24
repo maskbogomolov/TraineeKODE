@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">AppKODE</string>
+    <string name="hint">Введи имя, тег, почту...</string>
+    <string name="all">All</string>
+    <string name="android">Android</string>
+    <string name="ios">Ios</string>
+    <string name="design">Design</string>
+    <string name="management">Management</string>
+    <string name="qa">Qa</string>
+    <string name="back_office">Back office</string>
+    <string name="frontend">Frontend</string>
+    <string name="hr">Hr</string>
+    <string name="pr">Pr</string>
+    <string name="backend">Backend</string>
+    <string name="support">Support</string>
+    <string name="analytics">Analytics</string>
+</resources>
