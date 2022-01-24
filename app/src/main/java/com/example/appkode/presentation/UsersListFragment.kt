@@ -2,11 +2,10 @@ package com.example.appkode.presentation
 
 import android.content.Context
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import com.example.appkode.R
 import com.example.appkode.databinding.FragmentUsersListBinding
@@ -34,6 +33,11 @@ class UsersListFragment : Fragment(R.layout.fragment_users_list) {
         viewModel.users.observe(viewLifecycleOwner) { users ->
             Toast.makeText(requireContext(), "${users[0].department}", Toast.LENGTH_SHORT).show()
         }
+        setHasOptionsMenu(true)
     }
-
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        val searchItem = menu.findItem(R.id.search)
+        val searchView = searchItem?.actionView as SearchView
+        searchView.queryHint = ""
+    }
 }
