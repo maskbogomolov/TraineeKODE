@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.example.appkode.data.database.UsersEntity
 import com.example.appkode.data.network.UserDto
 import com.example.appkode.databinding.UserItemBinding
 import com.example.appkode.domain.User

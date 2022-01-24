@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.appkode.R
 import com.example.appkode.databinding.FragmentUsersListBinding
 import com.example.appkode.di.appComponent
+import com.example.appkode.util.Data
 import com.example.appkode.util.NetworkResponse
 import dagger.Lazy
 import javax.inject.Inject
@@ -28,6 +29,12 @@ class UsersListFragment : Fragment(R.layout.fragment_users_list) {
         super.onAttach(context)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.takeIf { it.containsKey("getDepartment") }?.apply {
+            viewModel.department.value = getString("getDepartment").toString()
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -36,10 +43,14 @@ class UsersListFragment : Fragment(R.layout.fragment_users_list) {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = usersAdapter
         }
-        viewModel.users.observe(viewLifecycleOwner) { users ->
-            when(users){
-                is NetworkResponse.Success -> usersAdapter.submitList(users.data)
-            }
+//        viewModel.users.observe(viewLifecycleOwner) { users ->
+//            when(users){
+//                is NetworkResponse.Success -> usersAdapter.submitList(users.data)
+//                //is NetworkResponse.Error -> Toast.makeText(requireContext(),"error",Toast.LENGTH_SHORT).show()
+//            }
+//        }
+        viewModel.getUserFromDb().observe(viewLifecycleOwner){users ->
+            if (users.isNotEmpty()) usersAdapter.submitList(users) else viewModel.getUser()
         }
         setHasOptionsMenu(true)
     }

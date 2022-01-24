@@ -3,6 +3,7 @@ package com.example.appkode.presentation
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.example.appkode.data.database.UsersEntity
 import com.example.appkode.data.network.UserDto
 import com.example.appkode.databinding.UserItemBinding
 import com.example.appkode.domain.User
@@ -20,7 +21,7 @@ class UsersViewHolder(
         loadImage(data)
     }
     fun setName(data: User){
-        binding.nameTxt.text = data.firstName + data.lastName
+        binding.nameTxt.text = "${data.lastName} ${data.firstName}"
     }
     fun setDepartment(data: User){
         binding.departmentTxt.text = data.department
