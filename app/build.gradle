@@ -74,4 +74,10 @@ dependencies {
 
     // Image Loading library Coil
     implementation "io.coil-kt:coil:$rootProject.coil"
+
+    // Room
+    implementation("androidx.room:room-runtime:$rootProject.room")
+    annotationProcessor("androidx.room:room-compiler:$rootProject.room")
+    kapt("androidx.room:room-compiler:$rootProject.room")
+    implementation("androidx.room:room-ktx:$rootProject.room")
 }

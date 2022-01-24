@@ -7,3 +7,9 @@ inline  fun <S,R> NetworkResponse<S>.mapResponse(block : (S) -> R): NetworkRespo
         is NetworkResponse.Error -> NetworkResponse.Error("error")
     }
 }
+inline fun <S> NetworkResponse<S>.doOnSuccess(block: (S) -> Unit): NetworkResponse<S> {
+    if (this is NetworkResponse.Success) {
+        block(this.data)
+    }
+    return this
+}

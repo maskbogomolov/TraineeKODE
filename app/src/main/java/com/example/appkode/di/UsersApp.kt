@@ -12,7 +12,14 @@ class UsersApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        appComponent = DaggerAppComponent.create()
+        appComponent = DaggerAppComponent.builder()
+            .appDeps(AppDepsImpl())
+            .bild()
+    }
+
+    private inner class AppDepsImpl : AppDeps {
+
+        override val context: Context = this@UsersApp
     }
 
 }

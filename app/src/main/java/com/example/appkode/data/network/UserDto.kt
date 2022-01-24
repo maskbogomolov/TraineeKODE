@@ -1,5 +1,6 @@
 package com.example.appkode.data.network
 
+import com.example.appkode.data.database.UsersEntity
 import com.example.appkode.domain.User
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
@@ -25,8 +26,9 @@ data class UserDto(
     @SerializedName("userTag")
     val userTag: String
 )
-fun UserDto.toDomain(): User{
-    return User(
+
+fun UserDto.toEntity(): UsersEntity {
+    return UsersEntity(
         avatarUrl = avatarUrl,
         birthday = birthday,
         department = department,
@@ -38,16 +40,3 @@ fun UserDto.toDomain(): User{
         userTag = userTag
     )
 }
-//fun UserDto.toEntity(): UserEntity{
-//    return User(
-//        avatarUrl = avatarUrl,
-//        birthday = birthday,
-//        department = department,
-//        firstName = firstName,
-//        id = id,
-//        lastName = lastName,
-//        phone = phone,
-//        position = position,
-//        userTag = userTag
-//    )
-//}
