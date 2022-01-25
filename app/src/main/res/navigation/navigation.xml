@@ -7,5 +7,14 @@
     <fragment
         android:id="@+id/homeViewPagerFragment"
         android:name="com.example.appkode.presentation.HomeViewPagerFragment"
-        android:label="HomeViewPagerFragment" />
+        android:label="HomeViewPagerFragment" >
+        <action
+            android:id="@+id/action_homeViewPagerFragment_to_errorFragment"
+            app:destination="@id/errorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/errorFragment"
+        android:name="com.example.appkode.presentation.ErrorFragment"
+        android:label="fragment_error"
+        tools:layout="@layout/fragment_error" />
 </navigation>

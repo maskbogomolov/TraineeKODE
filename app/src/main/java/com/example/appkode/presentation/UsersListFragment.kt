@@ -17,12 +17,14 @@ import dagger.Lazy
 import javax.inject.Inject
 
 
-class UsersListFragment : Fragment(R.layout.fragment_users_list), SearchView.OnQueryTextListener {
+class UsersListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     @Inject
     lateinit var usersViewModelFactory: Lazy<UsersViewModel.Factory>
     private val viewModel: UsersViewModel by viewModels { usersViewModelFactory.get() }
     private val usersAdapter: UsersAdapter by lazy { UsersAdapter(requireActivity(), viewModel) }
+    private var _binding : FragmentUsersListBinding? = null
+    private val binding get() = _binding!!
 
     override fun onAttach(context: Context) {
         context.appComponent.inject(this)
@@ -37,10 +39,8 @@ class UsersListFragment : Fragment(R.layout.fragment_users_list), SearchView.OnQ
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val binding = FragmentUsersListBinding.bind(view)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        _binding = FragmentUsersListBinding.inflate(inflater,container,false)
         binding.usersList.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = usersAdapter
@@ -50,6 +50,7 @@ class UsersListFragment : Fragment(R.layout.fragment_users_list), SearchView.OnQ
             usersAdapter.submitList(it)
         }
         setHasOptionsMenu(true)
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -68,6 +69,12 @@ class UsersListFragment : Fragment(R.layout.fragment_users_list), SearchView.OnQ
             Toast.makeText(requireContext(), "$newText", Toast.LENGTH_SHORT).show()
             viewModel.queryFlow.value = newText
             viewModel.filter.observe(viewLifecycleOwner) {
+                if (it.isEmpty()) {
+                    usersAdapter.submitList(emptyList())
+                    binding.usersList.visibility = View.INVISIBLE
+                    binding.holderErrorMessage.visibility = View.VISIBLE
+                } else
+                    binding.usersList.visibility = View.VISIBLE
                 usersAdapter.submitList(it)
             }
         }
