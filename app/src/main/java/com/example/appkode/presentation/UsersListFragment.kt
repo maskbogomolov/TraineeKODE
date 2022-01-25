@@ -17,12 +17,12 @@ import dagger.Lazy
 import javax.inject.Inject
 
 
-class UsersListFragment : Fragment(R.layout.fragment_users_list) {
+class UsersListFragment : Fragment(R.layout.fragment_users_list), SearchView.OnQueryTextListener {
 
     @Inject
     lateinit var usersViewModelFactory: Lazy<UsersViewModel.Factory>
     private val viewModel: UsersViewModel by viewModels { usersViewModelFactory.get() }
-    private val usersAdapter: UsersAdapter by lazy { UsersAdapter(requireActivity(),viewModel) }
+    private val usersAdapter: UsersAdapter by lazy { UsersAdapter(requireActivity(), viewModel) }
 
     override fun onAttach(context: Context) {
         context.appComponent.inject(this)
@@ -33,8 +33,10 @@ class UsersListFragment : Fragment(R.layout.fragment_users_list) {
         super.onCreate(savedInstanceState)
         arguments?.takeIf { it.containsKey("getDepartment") }?.apply {
             viewModel.department.value = getString("getDepartment").toString()
+
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -43,20 +45,32 @@ class UsersListFragment : Fragment(R.layout.fragment_users_list) {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = usersAdapter
         }
-//        viewModel.users.observe(viewLifecycleOwner) { users ->
-//            when(users){
-//                is NetworkResponse.Success -> usersAdapter.submitList(users.data)
-//                //is NetworkResponse.Error -> Toast.makeText(requireContext(),"error",Toast.LENGTH_SHORT).show()
-//            }
-//        }
-        viewModel.getUserFromDb().observe(viewLifecycleOwner){users ->
-            if (users.isNotEmpty()) usersAdapter.submitList(users) else viewModel.getUser()
+
+        viewModel.filter.observe(viewLifecycleOwner) {
+            usersAdapter.submitList(it)
         }
         setHasOptionsMenu(true)
     }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         val searchItem = menu.findItem(R.id.search)
         val searchView = searchItem?.actionView as SearchView
         searchView.queryHint = ""
+        searchView.setOnQueryTextListener(this)
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        if (newText != null) {
+            Toast.makeText(requireContext(), "$newText", Toast.LENGTH_SHORT).show()
+            viewModel.queryFlow.value = newText
+            viewModel.filter.observe(viewLifecycleOwner) {
+                usersAdapter.submitList(it)
+            }
+        }
+        return true
     }
 }

@@ -1,5 +1,9 @@
 package com.example.appkode.util
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+
 inline  fun <S,R> NetworkResponse<S>.mapResponse(block : (S) -> R): NetworkResponse<R>{
 
     return when(this){
@@ -13,3 +17,9 @@ inline fun <S> NetworkResponse<S>.doOnSuccess(block: (S) -> Unit): NetworkRespon
     }
     return this
 }
+inline fun <T, R> Flow<Iterable<T>>.mapToUserDomain(crossinline transform: suspend (T) -> R): Flow<List<R>> =
+    map { list ->
+        list.map { item ->
+            transform(item)
+        }
+    }

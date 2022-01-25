@@ -11,6 +11,7 @@ import com.example.appkode.domain.UsersRepository
 import com.example.appkode.util.NetworkResponse
 import com.example.appkode.util.doOnSuccess
 import com.example.appkode.util.mapResponse
+import com.example.appkode.util.mapToUserDomain
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -30,6 +31,13 @@ class UsersRepositoryImpl @Inject constructor(
 
     override fun getUsersByDep(dep: String): Flow<List<User>> {
         return localDataSource.getUsersByDep(dep)
-            .map { listEntity -> listEntity.map { it.toDomain() } }
+            .mapToUserDomain { usersEntity -> usersEntity.toDomain() }
     }
+
+    override fun searchUsers(dep: String,query: String, ): Flow<List<User>> {
+       return localDataSource.searchUsers(dep, query)
+           .mapToUserDomain { usersEntity -> usersEntity.toDomain() }
+    }
+
+
 }

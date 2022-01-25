@@ -8,4 +8,5 @@ interface UsersRepository {
 
     suspend fun getUsers(): NetworkResponse<List<User>>
     fun getUsersByDep(dep: String): Flow<List<User>>
+    fun searchUsers(dep: String,query:String,): Flow<List<User>>
 }

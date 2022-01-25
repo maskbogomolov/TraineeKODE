@@ -7,6 +7,7 @@ interface LocalDataSource {
 
     suspend fun insertAll(usersEntity: List<UsersEntity>)
     fun getUsersByDep(dep: String): Flow<List<UsersEntity>>
+    fun searchUsers(dep: String,query: String): Flow<List<UsersEntity>>
 }
 
 class LocalDataSourceImpl @Inject constructor(private val dao: UsersDao) : LocalDataSource {
@@ -17,6 +18,10 @@ class LocalDataSourceImpl @Inject constructor(private val dao: UsersDao) : Local
 
     override fun getUsersByDep(dep: String): Flow<List<UsersEntity>> {
         return dao.sortByDepartment(dep)
+    }
+
+    override fun searchUsers(dep: String, query: String): Flow<List<UsersEntity>> {
+        return dao.searchUsers(dep, query)
     }
 
 }
