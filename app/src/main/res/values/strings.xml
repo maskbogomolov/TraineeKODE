@@ -18,12 +18,15 @@
     <string name="filter_by_birthday">Сортировка по дню рождения</string>
     <string name="filter_by_abc">Сортировка по алфавиту</string>
     <string name="reload">Попробовать снова</string>
-    <string name="willToTryFix">Постараемся быстро починить</string>
+    <string name="will_To_Try_Fix">Постараемся быстро починить</string>
     <string name="bulling">Какой-то сверхразум все сломал</string>
     <string name="empty_response">Мы ничего не нашли</string>
     <string name="empty_correct_text">Попробуй скорректировать запрос</string>
     <string name="cancel">Отмена</string>
     <string name="network_error">Не могу обновить данные.Проверь соединение с интернетом.</string>
     <string name="load">Секундочку, гружусь...</string>
+    <string name="filter_Title">Сортировка</string>
+    <string name="title_sort_by_abc">По алфавиту</string>
+    <string name="title_sort_by_birthday">По дню рождения</string>
 
 </resources>

@@ -7,6 +7,7 @@ import android.net.NetworkInfo
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.content.ContextCompat.getSystemServiceName
 import androidx.lifecycle.*
+import com.example.appkode.domain.User
 import com.example.appkode.domain.UsersRepository
 import com.example.appkode.util.*
 import kotlinx.coroutines.Dispatchers
@@ -17,6 +18,7 @@ import javax.inject.Provider
 
 class UsersViewModel(val repository: UsersRepository) : ViewModel() {
 
+    val refreshUsers = MutableLiveData<NetworkResponse<List<User>>>()
     val sortOrder = MutableStateFlow(SortOrder.NONE)
     val queryFlow = MutableStateFlow("")
     val department = MutableStateFlow("")
@@ -29,10 +31,11 @@ class UsersViewModel(val repository: UsersRepository) : ViewModel() {
 
     val filter = usersFlow.asLiveData()
 
-    fun getUser() {
-        viewModelScope.launch {
-            repository.getUsers()
-        }
+    suspend fun getUser() {
+       return when(val refresh = repository.getUsers()){
+           is NetworkResponse.Success -> refreshUsers.value = NetworkResponse.Success(refresh.data)
+           is NetworkResponse.Error -> refreshUsers.value = NetworkResponse.Error("error")
+       }
     }
 
     fun isOnline(appCon: Context): Boolean {

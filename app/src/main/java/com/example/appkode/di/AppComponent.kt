@@ -2,6 +2,7 @@ package com.example.appkode.di
 
 import android.content.Context
 import com.example.appkode.MainActivity
+import com.example.appkode.presentation.ErrorFragment
 import com.example.appkode.presentation.UsersListFragment
 import dagger.Component
 import dagger.Module
@@ -11,6 +12,7 @@ interface AppComponent {
 
     fun inject(activity: MainActivity)
     fun inject(fragment: UsersListFragment)
+    fun inject(errorFragment: ErrorFragment)
 
     @Component.Builder
     interface Builder{

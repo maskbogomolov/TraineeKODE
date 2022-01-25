@@ -3,16 +3,22 @@ package com.example.appkode.presentation
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.appkode.R
 import com.example.appkode.databinding.FragmentUsersListBinding
 import com.example.appkode.di.appComponent
+import com.example.appkode.util.changeTrueItemColor
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.Lazy
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 //Toast.makeText(requireContext(),"2",Toast.LENGTH_SHORT).show()
@@ -45,15 +51,13 @@ class UsersListFragment : Fragment(), SearchView.OnQueryTextListener {
             adapter = usersAdapter
         }
 
-
         viewModel.filter.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
                 usersAdapter.submitList(it)
             } else if (it.isEmpty() && !viewModel.isOnline(requireContext())){
                 findNavController().navigate(R.id.errorFragment)
             }else{
-                Toast.makeText(requireContext(),"3",Toast.LENGTH_SHORT).show()
-                viewModel.getUser()
+                lifecycleScope.launch { viewModel.getUser() }
             }
         }
         setHasOptionsMenu(true)
@@ -78,4 +82,34 @@ class UsersListFragment : Fragment(), SearchView.OnQueryTextListener {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.choice -> {
+                val dialog = BottomSheetDialog(requireContext())
+                val view=layoutInflater.inflate(R.layout.bottom_filter,null)
+
+                val dialogFilterByAbc = view.findViewById<ImageView>(R.id.filterByAbc)
+                val dialogFilterByBirthday = view.findViewById<ImageView>(R.id.filterByBirthday)
+
+                dialogFilterByAbc.setOnClickListener {
+                    item.changeTrueItemColor(requireContext())
+                    dialog.dismiss()
+                }
+                dialogFilterByBirthday.setOnClickListener {
+
+                    item.changeTrueItemColor(requireContext())
+                    dialog.dismiss()
+                }
+                dialog.setContentView(view)
+                dialog.show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }
