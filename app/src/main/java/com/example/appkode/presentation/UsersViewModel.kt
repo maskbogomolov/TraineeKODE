@@ -19,15 +19,15 @@ import javax.inject.Provider
 class UsersViewModel(val repository: UsersRepository) : ViewModel() {
 
     val refreshUsers = MutableLiveData<NetworkResponse<List<User>>>()
-    val sortOrder = MutableStateFlow(SortOrder.NONE)
+    val sortOrder = MutableStateFlow(SortOrder.BY_NAME)
     val queryFlow = MutableStateFlow("")
     val department = MutableStateFlow("")
 
     private val usersFlow = combine(
-        department, queryFlow
-    ) { department, query ->
-        Pair(department, query)
-    }.flatMapLatest { (department, query) -> repository.searchUsers(department, query) }
+        department, queryFlow , sortOrder
+    ) { department, query , sortOrder->
+        Triple(department, query, sortOrder)
+    }.flatMapLatest { (department, query, sortOrder) -> repository.searchUsers(department, query, sortOrder) }
 
     val filter = usersFlow.asLiveData()
 

@@ -17,5 +17,5 @@ object Const{
 }
 
 enum class SortOrder{
-    NONE,BY_DATA,BY_NAME
+    BY_DATA,BY_NAME
 }

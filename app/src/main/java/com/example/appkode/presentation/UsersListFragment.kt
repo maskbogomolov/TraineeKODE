@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.appkode.R
 import com.example.appkode.databinding.FragmentUsersListBinding
 import com.example.appkode.di.appComponent
+import com.example.appkode.util.SortOrder
 import com.example.appkode.util.changeTrueItemColor
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.Lazy
@@ -92,12 +93,13 @@ class UsersListFragment : Fragment(), SearchView.OnQueryTextListener {
                 val dialogFilterByBirthday = view.findViewById<ImageView>(R.id.filterByBirthday)
 
                 dialogFilterByAbc.setOnClickListener {
-                    item.changeTrueItemColor(requireContext())
+                    //item.changeTrueItemColor(requireContext())
+                    viewModel.sortOrder.value = SortOrder.BY_NAME
                     dialog.dismiss()
                 }
                 dialogFilterByBirthday.setOnClickListener {
-
-                    item.changeTrueItemColor(requireContext())
+                    viewModel.sortOrder.value = SortOrder.BY_DATA
+                    //item.changeTrueItemColor(requireContext())
                     dialog.dismiss()
                 }
                 dialog.setContentView(view)
