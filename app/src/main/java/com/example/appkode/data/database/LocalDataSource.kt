@@ -7,22 +7,27 @@ import javax.inject.Inject
 interface LocalDataSource {
 
     suspend fun insertAll(usersEntity: List<UsersEntity>)
-    fun getUsersByDep(dep: String): Flow<List<UsersEntity>>
     fun searchUsers(dep: String,query: String, sortOrder: SortOrder): Flow<List<UsersEntity>>
+    suspend fun checkFilter(key : String) : Boolean
+    suspend fun saveFilterMode(key: String,value : Boolean)
 }
 
-class LocalDataSourceImpl @Inject constructor(private val dao: UsersDao) : LocalDataSource {
+class LocalDataSourceImpl @Inject constructor(private val dao: UsersDao,private val sharedPreferences: SharedPreferences) : LocalDataSource {
 
     override suspend fun insertAll(usersEntity: List<UsersEntity>) {
         dao.insertAll(usersEntity)
     }
 
-    override fun getUsersByDep(dep: String): Flow<List<UsersEntity>> {
-        return dao.sortByDepartment(dep)
-    }
-
     override fun searchUsers(dep: String, query: String, sortOrder: SortOrder): Flow<List<UsersEntity>> {
         return dao.searchUsersWithFilter(dep, query, sortOrder)
+    }
+
+    override suspend fun checkFilter(key: String): Boolean {
+        return sharedPreferences.isFilter(key)
+    }
+
+    override suspend fun saveFilterMode(key: String, value: Boolean) {
+        sharedPreferences.saveFilterMode(key,value)
     }
 
 }

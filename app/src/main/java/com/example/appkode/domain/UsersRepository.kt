@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.Flow
 interface UsersRepository {
 
     suspend fun getUsers(): NetworkResponse<List<User>>
-    fun getUsersByDep(dep: String): Flow<List<User>>
     fun searchUsers(dep: String,query:String,sortOrder: SortOrder): Flow<List<User>>
+    suspend fun checkFilter(key : String) : Boolean
+    suspend fun saveFilterMode(key: String,value : Boolean)
+
 }

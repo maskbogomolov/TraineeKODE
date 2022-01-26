@@ -15,14 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.appkode.R
 import com.example.appkode.databinding.FragmentUsersListBinding
 import com.example.appkode.di.appComponent
-import com.example.appkode.util.SortOrder
-import com.example.appkode.util.changeTrueItemColor
+import com.example.appkode.util.*
+import com.example.appkode.util.Const.KEY
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import dagger.Lazy
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-//Toast.makeText(requireContext(),"2",Toast.LENGTH_SHORT).show()
 class UsersListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     @Inject
@@ -32,7 +31,6 @@ class UsersListFragment : Fragment(), SearchView.OnQueryTextListener {
     private var _binding: FragmentUsersListBinding? = null
     private val binding get() = _binding!!
 
-
     override fun onAttach(context: Context) {
         context.appComponent.inject(this)
         super.onAttach(context)
@@ -40,8 +38,8 @@ class UsersListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.takeIf { it.containsKey("getDepartment") }?.apply {
-            viewModel.department.value = getString("getDepartment").toString()
+        arguments?.takeIf { it.containsKey(KEY) }?.apply {
+            viewModel.department.value = getString(KEY).toString()
         }
     }
 
@@ -55,9 +53,9 @@ class UsersListFragment : Fragment(), SearchView.OnQueryTextListener {
         viewModel.filter.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
                 usersAdapter.submitList(it)
-            } else if (it.isEmpty() && !viewModel.isOnline(requireContext())){
+            } else if (it.isEmpty() && !viewModel.isOnline(requireContext())) {
                 findNavController().navigate(R.id.errorFragment)
-            }else{
+            } else {
                 lifecycleScope.launch { viewModel.getUser() }
             }
         }
@@ -70,6 +68,14 @@ class UsersListFragment : Fragment(), SearchView.OnQueryTextListener {
         val searchView = searchItem?.actionView as SearchView
         searchView.queryHint = ""
         searchView.setOnQueryTextListener(this)
+
+        val filterItem = menu.findItem(R.id.choice)
+        viewLifecycleOwner.lifecycleScope.launch {
+            val key = arguments?.get(KEY).toString()
+            if (viewModel.checkFilter(key)) filterItem.changeTrueItemColor(requireContext())
+            else filterItem.changeFalseItemColor(requireContext())
+        }
+
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
@@ -84,22 +90,36 @@ class UsersListFragment : Fragment(), SearchView.OnQueryTextListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId){
+        val key = arguments?.get(KEY).toString()
+        return when (item.itemId) {
             R.id.choice -> {
                 val dialog = BottomSheetDialog(requireContext())
-                val view=layoutInflater.inflate(R.layout.bottom_filter,null)
+                val view = layoutInflater.inflate(R.layout.bottom_filter, null)
 
                 val dialogFilterByAbc = view.findViewById<ImageView>(R.id.filterByAbc)
                 val dialogFilterByBirthday = view.findViewById<ImageView>(R.id.filterByBirthday)
 
+                viewLifecycleOwner.lifecycleScope.launch {
+                    if (viewModel.checkFilter(key)) {
+                        dialogFilterByBirthday.selectTrueFilterIcon(requireContext())
+                        dialogFilterByAbc.selectFalseFilterIcon(requireContext())
+                    } else {
+                        dialogFilterByBirthday.selectFalseFilterIcon(requireContext())
+                        dialogFilterByAbc.selectTrueFilterIcon(requireContext())
+                    }
+
+                }
+
                 dialogFilterByAbc.setOnClickListener {
-                    //item.changeTrueItemColor(requireContext())
+                    viewModel.saveFilterMode(key, false)
+                    item.changeFalseItemColor(requireContext())
                     viewModel.sortOrder.value = SortOrder.BY_NAME
                     dialog.dismiss()
                 }
                 dialogFilterByBirthday.setOnClickListener {
+                    viewModel.saveFilterMode(key, true)
                     viewModel.sortOrder.value = SortOrder.BY_DATA
-                    //item.changeTrueItemColor(requireContext())
+                    item.changeTrueItemColor(requireContext())
                     dialog.dismiss()
                 }
                 dialog.setContentView(view)

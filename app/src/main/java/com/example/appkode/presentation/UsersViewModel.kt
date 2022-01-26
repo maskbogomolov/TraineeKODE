@@ -44,6 +44,15 @@ class UsersViewModel(val repository: UsersRepository) : ViewModel() {
         return networkInfo?.isConnected == true
     }
 
+    suspend fun checkFilter(key : String) : Boolean{
+        return repository.checkFilter(key)
+    }
+    fun saveFilterMode(key: String,value : Boolean) {
+        viewModelScope.launch{
+            repository.saveFilterMode(key, value)
+        }
+    }
+
     class Factory @Inject constructor(val api: Provider<UsersRepository>) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

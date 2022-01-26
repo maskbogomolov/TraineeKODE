@@ -4,6 +4,7 @@ import android.os.Bundle
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.appkode.util.Const.ALL
 import com.example.appkode.util.Const.ANALYTICS_DEP
 import com.example.appkode.util.Const.ANDROID_DEP
 import com.example.appkode.util.Const.BACKEND_DEP
@@ -61,6 +62,7 @@ class PagerAdapter(
         val fragment = UsersListFragment()
         return when (position) {
             PAGE_INDEX_0 -> {
+                fragment.arguments = Bundle().apply { putString(KEY, ALL) }
                 fragment
             }
             PAGE_INDEX_1 -> {

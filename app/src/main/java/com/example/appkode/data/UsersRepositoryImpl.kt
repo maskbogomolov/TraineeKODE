@@ -26,15 +26,20 @@ class UsersRepositoryImpl @Inject constructor(
             .mapResponse { entities -> entities.map { it.toDomain() } }
     }
 
-    override fun getUsersByDep(dep: String): Flow<List<User>> {
-        return localDataSource.getUsersByDep(dep)
-            .mapToUserDomain { usersEntity -> usersEntity.toDomain() }
-    }
 
     override fun searchUsers(dep: String,query: String,sortOrder: SortOrder ): Flow<List<User>> {
        return localDataSource.searchUsers(dep, query, sortOrder)
            .mapToUserDomain { usersEntity -> usersEntity.toDomain() }
     }
+
+    override suspend fun checkFilter(key: String): Boolean {
+        return localDataSource.checkFilter(key)
+    }
+
+    override suspend fun saveFilterMode(key: String, value: Boolean) {
+        localDataSource.saveFilterMode(key, value)
+    }
+
 
 
 }

@@ -1,6 +1,7 @@
 package com.example.appkode.util
 
 object Const{
+    const val ALL = ""
     const val ANDROID_DEP = "android"
     const val IOS_DEP = "ios"
     const val DESIGN_DEP = "design"
@@ -14,6 +15,7 @@ object Const{
     const val SUPPORT_DEP = "support"
     const val ANALYTICS_DEP = "analytics"
     const val KEY = "getDepartment"
+    const val PREF_NAME = "shared_pref"
 }
 
 enum class SortOrder{
