@@ -84,10 +84,11 @@
                     tools:text="Designer"
                     android:textColor="@color/textPrimary"/>
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/backBottom"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginStart="24dp"
                     android:layout_marginTop="72dp"
                     android:src="@drawable/backicon"

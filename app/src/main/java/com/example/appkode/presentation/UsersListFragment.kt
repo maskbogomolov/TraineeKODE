@@ -49,13 +49,15 @@ class UsersListFragment : Fragment(), SearchView.OnQueryTextListener {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = usersAdapter
         }
+        showShimmerEffect()
 
         viewModel.filter.observe(viewLifecycleOwner) {
             if (!viewModel.isOnline(requireContext()) || viewModel.refreshUsers.value is NetworkResponse.Error) {
                 findNavController().navigate(R.id.errorFragment)
-            } else if (viewModel.queryFlow.value.isNotEmpty()) {
+            }else if (it.isEmpty() && viewModel.queryFlow.value.isNotEmpty()){
                 showEmptyResponse()
-            } else {
+            }else{
+                hideShimmerEffect()
                 usersAdapter.submitList(it)
                 hideEmptyResponse()
             }
@@ -139,6 +141,13 @@ class UsersListFragment : Fragment(), SearchView.OnQueryTextListener {
         binding.holderErrorMessage.visibility = View.INVISIBLE
     }
 
+    private fun showShimmerEffect(){
+        binding.shimmerFrameLayout.startShimmer()
+    }
+    private fun hideShimmerEffect(){
+        binding.shimmerFrameLayout.hideShimmer()
+        binding.shimmerFrameLayout.visibility = View.GONE
+    }
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
