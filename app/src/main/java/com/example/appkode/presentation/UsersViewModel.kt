@@ -31,6 +31,11 @@ class UsersViewModel(val repository: UsersRepository) : ViewModel() {
 
     val filter = usersFlow.asLiveData()
 
+    init {
+        viewModelScope.launch {
+            getUser()
+        }
+    }
     suspend fun getUser() {
        return when(val refresh = repository.getUsers()){
            is NetworkResponse.Success -> refreshUsers.value = NetworkResponse.Success(refresh.data)

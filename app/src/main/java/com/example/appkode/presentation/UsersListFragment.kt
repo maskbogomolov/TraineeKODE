@@ -51,12 +51,13 @@ class UsersListFragment : Fragment(), SearchView.OnQueryTextListener {
         }
 
         viewModel.filter.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
-                usersAdapter.submitList(it)
-            } else if (it.isEmpty() && !viewModel.isOnline(requireContext())) {
+            if (!viewModel.isOnline(requireContext()) || viewModel.refreshUsers.value is NetworkResponse.Error) {
                 findNavController().navigate(R.id.errorFragment)
+            } else if (viewModel.queryFlow.value.isNotEmpty()) {
+                showEmptyResponse()
             } else {
-                lifecycleScope.launch { viewModel.getUser() }
+                usersAdapter.submitList(it)
+                hideEmptyResponse()
             }
         }
         setHasOptionsMenu(true)
@@ -107,7 +108,6 @@ class UsersListFragment : Fragment(), SearchView.OnQueryTextListener {
                         dialogFilterByBirthday.selectFalseFilterIcon(requireContext())
                         dialogFilterByAbc.selectTrueFilterIcon(requireContext())
                     }
-
                 }
 
                 dialogFilterByAbc.setOnClickListener {
@@ -128,6 +128,15 @@ class UsersListFragment : Fragment(), SearchView.OnQueryTextListener {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showEmptyResponse() {
+        usersAdapter.submitList(emptyList())
+        binding.holderErrorMessage.visibility = View.VISIBLE
+    }
+
+    private fun hideEmptyResponse() {
+        binding.holderErrorMessage.visibility = View.INVISIBLE
     }
 
     override fun onDestroy() {
