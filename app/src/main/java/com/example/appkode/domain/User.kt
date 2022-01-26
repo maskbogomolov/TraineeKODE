@@ -1,7 +1,11 @@
 package com.example.appkode.domain
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
+import java.io.Serializable
 
+@Parcelize
 data class User(
     val avatarUrl: String,
     val birthday: String,
@@ -12,4 +16,4 @@ data class User(
     val phone: String,
     val position: String,
     val userTag: String
-)
+): Parcelable

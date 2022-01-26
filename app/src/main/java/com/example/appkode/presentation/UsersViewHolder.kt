@@ -1,6 +1,8 @@
 package com.example.appkode.presentation
 
+import android.view.View
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.appkode.data.database.UsersEntity
@@ -19,7 +21,18 @@ class UsersViewHolder(
         setDepartment(data)
         setTag(data)
         loadImage(data)
+        itemView.setOnClickListener {
+            navigateToDetails(data,it)
+        }
+
     }
+
+    fun navigateToDetails(data: User,view:View) {
+        val direction = HomeViewPagerFragmentDirections
+            .actionHomeViewPagerFragmentToDetailsFragment(data)
+        view.findNavController().navigate(direction)
+    }
+
     fun setName(data: User){
         binding.nameTxt.text = "${data.lastName} ${data.firstName}"
     }

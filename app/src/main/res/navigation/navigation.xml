@@ -11,10 +11,22 @@
         <action
             android:id="@+id/action_homeViewPagerFragment_to_errorFragment"
             app:destination="@id/errorFragment" />
+        <action
+            android:id="@+id/action_homeViewPagerFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/errorFragment"
         android:name="com.example.appkode.presentation.ErrorFragment"
         android:label="fragment_error"
         tools:layout="@layout/fragment_error" />
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.appkode.presentation.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="user"
+            app:argType="com.example.appkode.domain.User" />
+    </fragment>
 </navigation>
